@@ -4,8 +4,7 @@ import gzip
 
 
 def main():
-    aws_access_key = 'AKIAU4EQQIVLVAX74XW2'
-    aws_secret_key = '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'
+
     bucket_name = 'commoncrawl'
     file_key = 'crawl-data/CC-MAIN-2022-05/wet.paths.gz'
     temp_folder = tempfile.TemporaryDirectory()
