@@ -50,6 +50,7 @@ def get_file_from_uri(s3, bucket_name, file_key):
         s3.download_file(bucket_name, file_key, local_file_path)
         with gzip.open(local_file_path, 'rt', encoding='utf-8') as f:
             for line in f:
+                # Process 'line' here
                 print(line.strip())
                 return line.strip()
 
