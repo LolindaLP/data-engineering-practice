@@ -2,19 +2,23 @@ import boto3
 import tempfile
 import gzip
 import json
-
+import os
+from botocore import UNSIGNED
+from botocore.client import Config
 
 def main():
-    with open("KEYS.json") as config_file:
-        config = json.load(config_file)
-
-    aws_access_key = config.get("aws_access_key")
-    aws_secret_key = config.get("aws_secret_key")
-
-    if aws_access_key is None:
-        raise ValueError("SECRET_KEY not found in the configuration file.")
-    if aws_secret_key is None:
-        raise ValueError("SECRET_KEY not found in the configuration file.")
+    aws_access_key = os.environ.get("aws_access_key")
+    aws_secret_key = os.environ.get("aws_secret_key")
+    # with open("KEYS.json") as config_file:
+    #     config = json.load(config_file)
+    #
+    # aws_access_key = config.get("aws_access_key")
+    # aws_secret_key = config.get("aws_secret_key")
+    #
+    # if aws_access_key is None:
+    #     raise ValueError("SECRET_KEY not found in the configuration file.")
+    # if aws_secret_key is None:
+    #     raise ValueError("SECRET_KEY not found in the configuration file.")
 
     bucket_name = 'commoncrawl'
     file_key = 'crawl-data/CC-MAIN-2022-05/wet.paths.gz'
@@ -24,8 +28,8 @@ def main():
 
 
 def get_boto3_client(aws_access_key_id, aws_secret_access_key):
-
-    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    print("creating client...")
+    s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED), region_name='us-east-1')
     return s3
 
 
@@ -52,7 +56,6 @@ def get_file_from_uri(s3, bucket_name, file_key):
             for line in f:
                 # Process 'line' here
                 print(line.strip())
-                return line.strip()
 
     except Exception as e:
         raise e
