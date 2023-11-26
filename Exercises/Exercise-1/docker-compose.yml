@@ -8,5 +8,5 @@ services:
   run:
     image: "exercise-1"
     volumes:
-      - .:/app
+      - ./downloads:/app/downloads
     command: python3 main.py
